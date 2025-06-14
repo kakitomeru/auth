@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/kakitomeru/auth/internal/model"
 	"github.com/kakitomeru/shared/config"
 	"github.com/kakitomeru/shared/telemetry"
 	"gorm.io/gorm"
-	"nota.auth/internal/model"
 )
 
 var (

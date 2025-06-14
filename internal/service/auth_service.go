@@ -6,13 +6,13 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/kakitomeru/auth/internal/model"
+	"github.com/kakitomeru/auth/internal/repository"
+	"github.com/kakitomeru/auth/pkg/bcrypt"
+	"github.com/kakitomeru/auth/pkg/crypto"
 	"github.com/kakitomeru/shared/config"
 	"github.com/kakitomeru/shared/jwt"
 	"github.com/kakitomeru/shared/telemetry"
-	"nota.auth/internal/model"
-	"nota.auth/internal/repository"
-	"nota.auth/pkg/bcrypt"
-	"nota.auth/pkg/crypto"
 )
 
 var (

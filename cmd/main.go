@@ -4,11 +4,11 @@ import (
 	"context"
 	"log"
 
+	. "github.com/kakitomeru/auth/internal/app"
+	"github.com/kakitomeru/auth/internal/model"
 	"github.com/kakitomeru/shared/config"
 	"github.com/kakitomeru/shared/database"
 	"github.com/kakitomeru/shared/env"
-	. "nota.auth/internal/app"
-	"nota.auth/internal/model"
 )
 
 func main() {

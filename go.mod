@@ -1,4 +1,4 @@
-module nota.auth
+module github.com/kakitomeru/auth
 
 go 1.24.3
 

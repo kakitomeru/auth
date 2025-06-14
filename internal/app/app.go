@@ -9,18 +9,18 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/kakitomeru/auth/internal/api"
+	"github.com/kakitomeru/auth/internal/interceptor"
+	"github.com/kakitomeru/auth/internal/metric"
+	"github.com/kakitomeru/auth/internal/repository"
+	"github.com/kakitomeru/auth/internal/service"
+	authpb "github.com/kakitomeru/auth/pkg/pb/v1"
 	"github.com/kakitomeru/shared/config"
 	"github.com/kakitomeru/shared/env"
 	"github.com/kakitomeru/shared/telemetry"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"gorm.io/gorm"
-	"nota.auth/internal/api"
-	"nota.auth/internal/interceptor"
-	"nota.auth/internal/metric"
-	"nota.auth/internal/repository"
-	"nota.auth/internal/service"
-	authpb "nota.auth/pkg/pb/v1"
 )
 
 type App struct {

@@ -5,16 +5,16 @@ import (
 	"errors"
 	"regexp"
 
+	"github.com/kakitomeru/auth/internal/interceptor"
+	"github.com/kakitomeru/auth/internal/metric"
+	"github.com/kakitomeru/auth/internal/repository"
+	"github.com/kakitomeru/auth/internal/service"
+	pb "github.com/kakitomeru/auth/pkg/pb/v1"
 	"github.com/kakitomeru/shared/jwt"
 	s "github.com/kakitomeru/shared/status"
 	"github.com/kakitomeru/shared/telemetry"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"nota.auth/internal/interceptor"
-	"nota.auth/internal/metric"
-	"nota.auth/internal/repository"
-	"nota.auth/internal/service"
-	pb "nota.auth/pkg/pb/v1"
 )
 
 var (

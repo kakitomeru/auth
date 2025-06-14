@@ -1,8 +1,8 @@
 package service
 
 import (
+	"github.com/kakitomeru/auth/internal/repository"
 	"github.com/kakitomeru/shared/config"
-	"nota.auth/internal/repository"
 )
 
 type Service struct {
