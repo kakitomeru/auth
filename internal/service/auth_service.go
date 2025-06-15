@@ -10,7 +10,6 @@ import (
 	"github.com/kakitomeru/auth/internal/repository"
 	"github.com/kakitomeru/auth/pkg/bcrypt"
 	"github.com/kakitomeru/auth/pkg/crypto"
-	"github.com/kakitomeru/shared/config"
 	"github.com/kakitomeru/shared/jwt"
 	"github.com/kakitomeru/shared/telemetry"
 )
@@ -35,14 +34,14 @@ type AuthService interface {
 }
 
 type AuthServiceImpl struct {
-	repo *repository.Repository
-	cfg  *config.Jwt
+	repo   *repository.Repository
+	jwtExp time.Duration
 }
 
-func NewAuthService(repo *repository.Repository, cfg *config.Jwt) *AuthServiceImpl {
+func NewAuthService(repo *repository.Repository, jwtExp time.Duration) *AuthServiceImpl {
 	return &AuthServiceImpl{
-		repo: repo,
-		cfg:  cfg,
+		repo:   repo,
+		jwtExp: jwtExp,
 	}
 }
 
@@ -95,7 +94,7 @@ func (s *AuthServiceImpl) Login(
 		return nil, ErrIncorrectPassword
 	}
 
-	accessToken, err := jwt.CreateJWT(user.ID, s.cfg.Exp)
+	accessToken, err := jwt.CreateJWT(user.ID, s.jwtExp)
 	if err != nil {
 		telemetry.RecordError(span, err)
 		return nil, err
@@ -141,7 +140,7 @@ func (s *AuthServiceImpl) RefreshToken(
 		return "", ErrSessionExpired
 	}
 
-	accessToken, err := jwt.CreateJWT(session.UserID, s.cfg.Exp)
+	accessToken, err := jwt.CreateJWT(session.UserID, s.jwtExp)
 	if err != nil {
 		telemetry.RecordError(span, err)
 		return "", err

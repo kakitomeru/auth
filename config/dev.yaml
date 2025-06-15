@@ -1,0 +1,11 @@
+name: "kakitomeru.auth"
+env:
+  - auth
+  - postgres
+  - otel
+  - jwt
+protected_rpc:
+  - GetUser
+  - Logout
+jwt_exp: 12h
+session_exp: 288h

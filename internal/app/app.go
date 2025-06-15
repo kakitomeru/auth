@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net"
 	"os"
@@ -10,12 +9,12 @@ import (
 	"syscall"
 
 	"github.com/kakitomeru/auth/internal/api"
+	"github.com/kakitomeru/auth/internal/config"
 	"github.com/kakitomeru/auth/internal/interceptor"
 	"github.com/kakitomeru/auth/internal/metric"
 	"github.com/kakitomeru/auth/internal/repository"
 	"github.com/kakitomeru/auth/internal/service"
 	authpb "github.com/kakitomeru/auth/pkg/pb/v1"
-	"github.com/kakitomeru/shared/config"
 	"github.com/kakitomeru/shared/env"
 	"github.com/kakitomeru/shared/telemetry"
 	"google.golang.org/grpc"
@@ -25,12 +24,12 @@ import (
 
 type App struct {
 	db     *gorm.DB
-	cfg    *config.Auth
+	cfg    *config.Config
 	port   string
 	server *grpc.Server
 }
 
-func NewApp(db *gorm.DB, cfg *config.Auth) *App {
+func NewApp(db *gorm.DB, cfg *config.Config) *App {
 	return &App{
 		db:   db,
 		cfg:  cfg,
@@ -75,18 +74,8 @@ func (a *App) Start(ctx context.Context) error {
 		),
 	)
 
-	sessionCfg, err := config.LoadSession()
-	if err != nil {
-		return fmt.Errorf("failed to load session config: %w", err)
-	}
-
-	jwtCfg, err := config.LoadJwt()
-	if err != nil {
-		return fmt.Errorf("failed to load jwt config: %w", err)
-	}
-
-	repo := repository.NewRepository(a.db, sessionCfg)
-	service := service.NewService(repo, jwtCfg)
+	repo := repository.NewRepository(a.db, a.cfg.SessionExp)
+	service := service.NewService(repo, a.cfg.JwtExp)
 
 	authHandler := api.NewAuthServiceHandler(service)
 	authpb.RegisterAuthServiceServer(a.server, authHandler)

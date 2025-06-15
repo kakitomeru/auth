@@ -7,7 +7,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/kakitomeru/auth/internal/model"
-	"github.com/kakitomeru/shared/config"
 	"github.com/kakitomeru/shared/telemetry"
 	"gorm.io/gorm"
 )
@@ -27,14 +26,14 @@ type SessionRepository interface {
 }
 
 type SessionRepositoryImpl struct {
-	db  *gorm.DB
-	cfg *config.Session
+	db         *gorm.DB
+	sessionExp time.Duration
 }
 
-func NewSessionRepository(db *gorm.DB, cfg *config.Session) *SessionRepositoryImpl {
+func NewSessionRepository(db *gorm.DB, sessionExp time.Duration) *SessionRepositoryImpl {
 	return &SessionRepositoryImpl{
-		db:  db,
-		cfg: cfg,
+		db:         db,
+		sessionExp: sessionExp,
 	}
 }
 
@@ -46,7 +45,7 @@ func (r *SessionRepositoryImpl) Create(
 	defer span.End()
 
 	session.ID = uuid.New()
-	session.ExpiresAt = time.Now().Add(r.cfg.Exp)
+	session.ExpiresAt = time.Now().Add(r.sessionExp)
 
 	if err := r.db.WithContext(ctx).Create(session).Error; err != nil {
 		telemetry.RecordError(span, err)

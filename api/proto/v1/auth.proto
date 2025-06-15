@@ -37,7 +37,7 @@ service AuthService {
 
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {
     option (google.api.http) = {
-      get: "/api/v1/auth/me"
+      get: "/api/v1/me"
     };
   }
 }

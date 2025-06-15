@@ -1,7 +1,8 @@
 package repository
 
 import (
-	"github.com/kakitomeru/shared/config"
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -10,9 +11,9 @@ type Repository struct {
 	Session SessionRepository
 }
 
-func NewRepository(db *gorm.DB, sessionCfg *config.Session) *Repository {
+func NewRepository(db *gorm.DB, sessionExp time.Duration) *Repository {
 	return &Repository{
 		User:    NewUserRepository(db),
-		Session: NewSessionRepository(db, sessionCfg),
+		Session: NewSessionRepository(db, sessionExp),
 	}
 }
