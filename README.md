@@ -1,6 +1,6 @@
 # WIP: Auth Service
 
-This is a repository for the authentication service. It's a microservice that handles user authentication and authorization. It's built with Go and uses gRPC for communication with an [API Gateway](https://github.com/kakitomeru/gateway).
+This is a repository for the auth service. It's a microservice that handles user authentication. It's built with Go and uses gRPC for communication with an [API Gateway](https://github.com/kakitomeru/gateway).
 
 ## How to run
 
