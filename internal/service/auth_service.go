@@ -27,7 +27,7 @@ type TokenPair struct {
 
 type AuthService interface {
 	Register(ctx context.Context, username, email, password string) (*uuid.UUID, error)
-	Login(ctx context.Context, email, password string) (*TokenPair, error)
+	Login(ctx context.Context, email, password string) (*model.User, *TokenPair, error)
 	RefreshToken(ctx context.Context, refreshToken string) (string, error)
 	Logout(ctx context.Context, userID uuid.UUID) error
 	GetUser(ctx context.Context, userID uuid.UUID) (*model.User, error)
@@ -78,26 +78,26 @@ func (s *AuthServiceImpl) Register(
 func (s *AuthServiceImpl) Login(
 	ctx context.Context,
 	email, password string,
-) (*TokenPair, error) {
+) (*model.User, *TokenPair, error) {
 	ctx, span := telemetry.StartSpan(ctx, "AuthService.Login")
 	defer span.End()
 
 	user, err := s.repo.User.GetByEmail(ctx, email)
 	if err != nil {
 		telemetry.RecordError(span, err)
-		return nil, err
+		return nil, nil, err
 	}
 
 	ok := bcrypt.Compare(ctx, password, user.Password)
 	if !ok {
 		telemetry.RecordError(span, ErrIncorrectPassword)
-		return nil, ErrIncorrectPassword
+		return nil, nil, ErrIncorrectPassword
 	}
 
 	accessToken, err := jwt.CreateJWT(user.ID, s.jwtExp)
 	if err != nil {
 		telemetry.RecordError(span, err)
-		return nil, err
+		return nil, nil, err
 	}
 	refreshToken := crypto.GenerateRandomBase64(64)
 
@@ -108,10 +108,10 @@ func (s *AuthServiceImpl) Login(
 
 	if err := s.repo.Session.Create(ctx, session); err != nil {
 		telemetry.RecordError(span, err)
-		return nil, err
+		return nil, nil, err
 	}
 
-	return &TokenPair{
+	return user, &TokenPair{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil

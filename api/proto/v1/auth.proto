@@ -42,6 +42,12 @@ service AuthService {
   }
 }
 
+message User {
+  string user_id = 1;
+  string username = 2;
+  string email = 3;
+}
+
 message RegisterRequest {
   string username = 1;
   string email = 2;
@@ -58,8 +64,9 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  string access_token = 1;
-  string refresh_token = 2;
+  User user = 1;
+  string access_token = 2;
+  string refresh_token = 3;
 }
 
 message LogoutRequest {}
@@ -77,7 +84,5 @@ message RefreshTokenResponse {
 message GetUserRequest {}
 
 message GetUserResponse {
-  string user_id = 1;
-  string username = 2;
-  string email = 3;
+  User user = 1;
 }

@@ -61,9 +61,11 @@ func (h *AuthServiceHandler) GetUser(
 	}
 
 	return &pb.GetUserResponse{
-		UserId:   user.ID.String(),
-		Username: user.Username,
-		Email:    user.Email,
+		User: &pb.User{
+			UserId:   user.ID.String(),
+			Username: user.Username,
+			Email:    user.Email,
+		},
 	}, nil
 }
 
@@ -85,7 +87,7 @@ func (h *AuthServiceHandler) Login(
 		return nil, status.Error(codes.InvalidArgument, errMsg)
 	}
 
-	tokenPair, err := h.service.Auth.Login(ctx, req.Email, req.Password)
+	user, tokenPair, err := h.service.Auth.Login(ctx, req.Email, req.Password)
 	if err != nil {
 		metric.FailedLoginsCounter.Add(ctx, 1)
 		telemetry.RecordError(span, err)
@@ -103,6 +105,11 @@ func (h *AuthServiceHandler) Login(
 	metric.ActiveSessionsCounter.Add(ctx, 1)
 	metric.SuccessfulLoginsCounter.Add(ctx, 1)
 	return &pb.LoginResponse{
+		User: &pb.User{
+			UserId:   user.ID.String(),
+			Username: user.Username,
+			Email:    user.Email,
+		},
 		AccessToken:  tokenPair.AccessToken,
 		RefreshToken: tokenPair.RefreshToken,
 	}, nil
