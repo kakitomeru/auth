@@ -5,6 +5,7 @@ import (
 	"errors"
 	"regexp"
 
+	"github.com/google/uuid"
 	"github.com/kakitomeru/auth/internal/interceptor"
 	"github.com/kakitomeru/auth/internal/metric"
 	"github.com/kakitomeru/auth/internal/repository"
@@ -36,6 +37,39 @@ func NewAuthServiceHandler(service *service.Service) *AuthServiceHandler {
 	}
 }
 
+func (h *AuthServiceHandler) GetMe(
+	ctx context.Context,
+	req *pb.GetMeRequest,
+) (*pb.GetMeResponse, error) {
+	ctx, span := telemetry.StartSpan(ctx, "AuthHandler.GetMe")
+	defer span.End()
+
+	userID := interceptor.GetUserID(ctx)
+	user, err := h.service.Auth.GetUser(ctx, userID)
+	if err != nil {
+		telemetry.RecordError(span, err)
+
+		switch {
+		case errors.Is(err, jwt.ErrInvalidToken):
+			return nil, status.Error(codes.Unauthenticated, err.Error())
+		case errors.Is(err, jwt.ErrExpiredToken):
+			return nil, status.Error(codes.Unauthenticated, err.Error())
+		case errors.Is(err, repository.ErrUserNotFound):
+			return nil, status.Error(codes.NotFound, err.Error())
+		default:
+			return nil, s.StatusInternal
+		}
+	}
+
+	return &pb.GetMeResponse{
+		User: &pb.User{
+			UserId:   user.ID.String(),
+			Username: user.Username,
+			Email:    user.Email,
+		},
+	}, nil
+}
+
 func (h *AuthServiceHandler) GetUser(
 	ctx context.Context,
 	req *pb.GetUserRequest,
@@ -43,7 +77,13 @@ func (h *AuthServiceHandler) GetUser(
 	ctx, span := telemetry.StartSpan(ctx, "AuthHandler.GetUser")
 	defer span.End()
 
-	userID := interceptor.GetUserID(ctx)
+	userID, err := uuid.Parse(req.UserId)
+	if err != nil {
+		errMsg := "user id is required and must be a valid uuid"
+		telemetry.RecordError(span, errors.New(errMsg))
+		return nil, status.Error(codes.InvalidArgument, errMsg)
+	}
+
 	user, err := h.service.Auth.GetUser(ctx, userID)
 	if err != nil {
 		telemetry.RecordError(span, err)

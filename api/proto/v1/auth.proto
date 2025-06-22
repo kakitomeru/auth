@@ -35,9 +35,15 @@ service AuthService {
     };
   }
 
-  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+  rpc GetMe(GetMeRequest) returns (GetMeResponse) {
     option (google.api.http) = {
       get: "/api/v1/me"
+    };
+  }
+
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/users/{user_id}"
     };
   }
 }
@@ -81,7 +87,15 @@ message RefreshTokenResponse {
   string access_token = 1;
 }
 
-message GetUserRequest {}
+message GetMeRequest {}
+
+message GetMeResponse {
+  User user = 1;
+}
+
+message GetUserRequest {
+  string user_id = 1;
+}
 
 message GetUserResponse {
   User user = 1;
