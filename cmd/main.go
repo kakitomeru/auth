@@ -7,7 +7,7 @@ import (
 
 	. "github.com/kakitomeru/auth/internal/app"
 	"github.com/kakitomeru/auth/internal/config"
-	"github.com/kakitomeru/auth/internal/model"
+	"github.com/kakitomeru/auth/pkg/model"
 	"github.com/kakitomeru/shared/database"
 	"github.com/kakitomeru/shared/env"
 	"github.com/kakitomeru/shared/logger"

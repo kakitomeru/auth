@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/kakitomeru/auth/internal/model"
 	"github.com/kakitomeru/auth/internal/repository"
 	"github.com/kakitomeru/auth/pkg/bcrypt"
 	"github.com/kakitomeru/auth/pkg/crypto"
+	"github.com/kakitomeru/auth/pkg/model"
 	"github.com/kakitomeru/shared/jwt"
 	"github.com/kakitomeru/shared/telemetry"
 )
