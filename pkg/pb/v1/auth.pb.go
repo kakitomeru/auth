@@ -660,14 +660,15 @@ const file_v1_auth_proto_rawDesc = "" +
 	"\x0eGetUserRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\"4\n" +
 	"\x0fGetUserResponse\x12!\n" +
-	"\x04user\x18\x01 \x01(\v2\r.auth.v1.UserR\x04user2\xdc\x03\n" +
+	"\x04user\x18\x01 \x01(\v2\r.auth.v1.UserR\x04user2\xbb\x04\n" +
 	"\vAuthService\x12a\n" +
 	"\bRegister\x12\x18.auth.v1.RegisterRequest\x1a\x19.auth.v1.RegisterResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/v1/auth/register\x12U\n" +
 	"\x05Login\x12\x15.auth.v1.LoginRequest\x1a\x16.auth.v1.LoginResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/auth/login\x12Y\n" +
 	"\x06Logout\x12\x16.auth.v1.LogoutRequest\x1a\x17.auth.v1.LogoutResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/v1/auth/logout\x12l\n" +
 	"\fRefreshToken\x12\x1c.auth.v1.RefreshTokenRequest\x1a\x1d.auth.v1.RefreshTokenResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/v1/auth/refresh\x12J\n" +
 	"\x05GetMe\x12\x15.auth.v1.GetMeRequest\x1a\x16.auth.v1.GetMeResponse\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
-	"/api/v1/meB2Z0github.com/kakitomeru/auth/pkg/pb/auth/v1;authpbb\x06proto3"
+	"/api/v1/me\x12]\n" +
+	"\aGetUser\x12\x17.auth.v1.GetUserRequest\x1a\x18.auth.v1.GetUserResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/api/v1/users/{user_id}B2Z0github.com/kakitomeru/auth/pkg/pb/auth/v1;authpbb\x06proto3"
 
 var (
 	file_v1_auth_proto_rawDescOnce sync.Once
@@ -706,13 +707,15 @@ var file_v1_auth_proto_depIdxs = []int32{
 	5,  // 5: auth.v1.AuthService.Logout:input_type -> auth.v1.LogoutRequest
 	7,  // 6: auth.v1.AuthService.RefreshToken:input_type -> auth.v1.RefreshTokenRequest
 	9,  // 7: auth.v1.AuthService.GetMe:input_type -> auth.v1.GetMeRequest
-	2,  // 8: auth.v1.AuthService.Register:output_type -> auth.v1.RegisterResponse
-	4,  // 9: auth.v1.AuthService.Login:output_type -> auth.v1.LoginResponse
-	6,  // 10: auth.v1.AuthService.Logout:output_type -> auth.v1.LogoutResponse
-	8,  // 11: auth.v1.AuthService.RefreshToken:output_type -> auth.v1.RefreshTokenResponse
-	10, // 12: auth.v1.AuthService.GetMe:output_type -> auth.v1.GetMeResponse
-	8,  // [8:13] is the sub-list for method output_type
-	3,  // [3:8] is the sub-list for method input_type
+	11, // 8: auth.v1.AuthService.GetUser:input_type -> auth.v1.GetUserRequest
+	2,  // 9: auth.v1.AuthService.Register:output_type -> auth.v1.RegisterResponse
+	4,  // 10: auth.v1.AuthService.Login:output_type -> auth.v1.LoginResponse
+	6,  // 11: auth.v1.AuthService.Logout:output_type -> auth.v1.LogoutResponse
+	8,  // 12: auth.v1.AuthService.RefreshToken:output_type -> auth.v1.RefreshTokenResponse
+	10, // 13: auth.v1.AuthService.GetMe:output_type -> auth.v1.GetMeResponse
+	12, // 14: auth.v1.AuthService.GetUser:output_type -> auth.v1.GetUserResponse
+	9,  // [9:15] is the sub-list for method output_type
+	3,  // [3:9] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
 	3,  // [3:3] is the sub-list for extension extendee
 	0,  // [0:3] is the sub-list for field type_name
