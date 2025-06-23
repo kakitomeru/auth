@@ -7,5 +7,6 @@ env:
 protected_rpc:
   - GetUser
   - Logout
+  - GetMe
 jwt_exp: 30s
 session_exp: 2m
